@@ -1,18 +1,64 @@
-pipeline {
-    agent { 
-         label 'any'
+pipeline { 
+    
+    agent any 
+
+    environment { 
+        registry = "rladkat/demo-service" 
+        registryCredential = 'dockerhub_id' 
+        dockerImage = '' 
+
+    }
+
+    stages { 
+
+        stage('Cloning our Git') { 
+            steps { 
+                git 'https://github.com/rladkat/monorepo-demo.git' 
+            }
+
+        } 
+        stage('Building our image') { 
+            steps { 
+                script { 
+
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+
+                }
+
+            } 
+
+        }
+
+        stage('Deploy our image') { 
+
+            steps { 
+
+                script { 
+
+                    docker.withRegistry( '', registryCredential ) { 
+
+                        dockerImage.push() 
+
+                    }
+
+                } 
+
+            }
+
         } 
 
-    stages {
-        stage('Build image') {
-            steps {
-                echo 'Starting to build docker image'
+        stage('Cleaning up') { 
 
-                script {
-                    def customImage = docker.build("my-image:${env.BUILD_ID}")
-                    customImage.push()
-                }
+            steps { 
+
+                sh "docker rmi $registry:$BUILD_NUMBER" 
+
             }
-        }
+
+        } 
+
     }
+
 }
+
+

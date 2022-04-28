@@ -1,6 +1,9 @@
 pipeline {   
     agent { 
-        docker {  image 'jenkins/agent' }
+        docker {  image 'jenkins/agent' 
+                  label 'jenkis-agent'
+                  args  '-v /tmp:/tmp'
+        }
      }
     environment { 
         registry = "rladkat/demo-service" 

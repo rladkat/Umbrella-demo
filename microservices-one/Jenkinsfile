@@ -1,5 +1,7 @@
 pipeline {   
-    agent { dockerfile true }
+    agent { 
+        docker { { image 'nginx:alpine' }}
+     }
     environment { 
         registry = "rladkat/demo-service" 
         registryCredential = 'dockerhub_id' 

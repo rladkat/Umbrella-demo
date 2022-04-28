@@ -1,12 +1,12 @@
 pipeline {   
-    agent any 
+    agent { dockerfile true }
     environment { 
         registry = "rladkat/demo-service" 
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
     }
     stages { 
-        
+
         stage('Building our image') { 
             steps { 
                 script { 

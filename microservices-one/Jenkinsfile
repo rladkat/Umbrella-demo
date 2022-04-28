@@ -11,12 +11,13 @@ pipeline {
 
     stages { 
 
-        stage('Cloning our Git') { 
-            steps { 
-                git 'https://github.com/rladkat/monorepo-demo.git' 
-            }
+        steps {
+            git branch: 'main',
+                credentialsId: 'my_cred_id',
+                url: 'git@github.com:rladkat/monorepo-demo.git'
 
-        } 
+            sh "ls -lat"
+        }
         stage('Building our image') { 
             steps { 
                 script { 

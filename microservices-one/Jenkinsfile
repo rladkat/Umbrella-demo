@@ -1,7 +1,13 @@
 pipeline {   
-    agent { 
-        docker {  image 'jenkins/agent' } }
+    agent {
+    kubernetes {
+      yamlFile 'build-agent.yaml'
+      defaultContainer 'maven'
+      idleMinutes 1
+        }
+    }
     environment { 
+        APP_NAME = "monorepo-demo"
         registry = "rladkat/demo-service" 
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 

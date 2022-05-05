@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import os
 import re
-
 import sys
 
 pre_release_placeholder = 'micro-svc-one'

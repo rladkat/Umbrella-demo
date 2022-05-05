@@ -6,6 +6,12 @@ pipeline {
       yamlFile 'build-agent.yaml'  // path to the pod definition relative to the root of our project 
       defaultContainer 'maven'  // define a default container if more than a few stages use it, will default to jnlp container
     }
+    environment { 
+        APP_NAME = "monorepo-demo"
+        registry = "rladkat/demo-service" 
+        registryCredential = 'dockerhub_id' 
+        dockerImage = '' 
+    }
   }
   stages {
     stage('Build') {
@@ -13,13 +19,12 @@ pipeline {
         sh "mvn clean package"   
       }
     }
-    // stage('Build Docker Image') {
-    //   steps {
-    //     container('docker') {  
-    //       sh "docker build -t vividlukeloresch/promo-app:dev ."  // when we run docker in this step, we're running it via a shell on the docker build-pod container, 
-    //       sh "docker push vividlukeloresch/promo-app:dev"        // which is just connecting to the host docker deaemon
-    //     }
-    //   }
-    // }
+   stage('Building our image') { 
+            steps { 
+                script { 
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+                }
+            } 
+      }
   }
 }

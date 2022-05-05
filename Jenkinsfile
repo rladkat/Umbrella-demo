@@ -6,13 +6,14 @@ pipeline {
       yamlFile 'build-agent.yaml'  // path to the pod definition relative to the root of our project 
       defaultContainer 'maven'  // define a default container if more than a few stages use it, will default to jnlp container
     }
-    environment { 
+    
+  }
+  environment { 
         APP_NAME = "monorepo-demo"
         registry = "rladkat/demo-service" 
         registryCredential = 'dockerhub_id' 
         dockerImage = '' 
     }
-  }
   stages {
     stage('Build') {
       steps {  // no container directive is needed as the maven container is the default

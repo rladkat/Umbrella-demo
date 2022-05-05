@@ -20,6 +20,12 @@ pipeline {
       }
     }
    stage('Building our image') { 
+            agent {
+              docker {
+                    image 'docker:dind'
+                    reuseNode true
+                }
+            }
             steps { 
                 script { 
                     dockerImage = docker.build registry + ":$BUILD_NUMBER" 

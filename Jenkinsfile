@@ -21,13 +21,13 @@ pipeline {
     }
     stage('Package') {
       agent {
-        docker { 'image: docker-tools'} 
-      }
-      steps {
+                docker { image 'docker-tools' }
+            }
+        steps {
           
-        script { 
+          script { 
                   dockerImage = docker.build registry + ":$BUILD_NUMBER" 
-              }
+        }
       }
     }
   }

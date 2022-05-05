@@ -6,7 +6,6 @@ pipeline {
       yamlFile 'build-agent.yaml'  // path to the pod definition relative to the root of our project 
       defaultContainer 'maven'  // define a default container if more than a few stages use it, will default to jnlp container
     }
-    
   }
   environment { 
         APP_NAME = "monorepo-demo"
@@ -23,9 +22,6 @@ pipeline {
    stage('Building our image') { 
             steps { 
                 script { 
-                  sh "$pwd"
-                  sh "ls -al"
-                  echo "docker building start."
                     dockerImage = docker.build registry + ":$BUILD_NUMBER" 
                 }
             } 

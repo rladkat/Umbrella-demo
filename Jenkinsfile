@@ -19,18 +19,13 @@ pipeline {
         sh "mvn clean package"   
       }
     }
-   stage('Building our image') { 
-            agent {
-              docker {
-                    image 'docker:dind'
-                    reuseNode true
-                }
-            }
-            steps { 
-                script { 
+    stage('Package') {
+      steps {
+        container('docker-tools') {
+          script { 
                     dockerImage = docker.build registry + ":$BUILD_NUMBER" 
                 }
-            } 
+        }
       }
-  }
+    }
 }
